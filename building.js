@@ -28,3 +28,29 @@ Building.prototype.initialize = function(floors, elevators) {
 	return this;
 };
 
+/*
+* startTrip: find optimal elevator to start trip
+* @params {int} trip start floor
+* @params {int} trip end floor
+*/
+Building.prototype.startTrip = function(start, end) {
+	if (end > this.top || start > this.top){
+		throw new Error(`Cannot go higher than floor ${this.top}`);
+	}
+	if (start < 1 || end < 1) {
+		throw new Error(`Cannot go below floor 1`);
+	}
+
+	const currentFloor = this.floors[start + 1];
+
+	//check for stationary elevators on the same floor
+	if (currentFloor.getStationaryElevator()) {
+		const elevator = currentFloor.getStationaryElevator();
+		return elevator.startTrip(end);
+	}
+
+	//check for moving elevators in the same direction
+
+	//get closes stationary elevator
+}
+
