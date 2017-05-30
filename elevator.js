@@ -17,3 +17,21 @@ Elevator.prototype.isActive = function() {
 	return this.trips <= 100;
 };
 
+/*
+* moveOneLevel: move one level up or down
+* @params {int} directors (1 up, -1 down)
+*/
+Elevator.prototype.moveOneLevel= function(direction) {
+	console.log(`Elevator moving from floor ${this.currentFloor} to ${this.currentFloor + direction}`)
+	this.currentFloor += direction;
+	this.floors ++;
+	this.direction = direction;
+};
+
+Elevator.prototype.startTip = function() {
+	console.log('Opening doors');
+	setTimeout(() => {
+		console.log('Closing doors');
+	}, 5000);
+};
+
