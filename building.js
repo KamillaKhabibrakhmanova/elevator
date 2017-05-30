@@ -29,7 +29,7 @@ Building.prototype.initialize = function(floors, elevators) {
 };
 
 /*
-* startTrip: find optimal elevator to start trip
+* startTrip: find optimal elevator and start trip
 * @params {int} trip start floor
 * @params {int} trip end floor
 */
@@ -44,13 +44,24 @@ Building.prototype.startTrip = function(start, end) {
 	const currentFloor = this.floors[start + 1];
 
 	//check for stationary elevators on the same floor
-	if (currentFloor.getStationaryElevator()) {
-		const elevator = currentFloor.getStationaryElevator();
-		return elevator.startTrip(end);
+	if (currentFloor.elevators.length) {
+		const len = currentFloor.elevators.length;
+		for (let i = 0; i < len; i++) {
+			if (this.elevators[elevatorId].direction === 0) {
+				let elevator = this.elevators[elevatorId];
+				currentFloor.removeElevator(elevatorId);
+				elevator.openAndCloseDoors();
+			}
+		}
 	}
 
 	//check for moving elevators in the same direction
+	if (!elevator) {
+		let nextUp = 
+	}
+
+	
 
 	//get closes stationary elevator
-}
+};
 
