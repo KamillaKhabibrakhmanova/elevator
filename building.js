@@ -41,27 +41,62 @@ Building.prototype.startTrip = function(start, end) {
 		throw new Error(`Cannot go below floor 1`);
 	}
 
-	const currentFloor = this.floors[start + 1];
+	const currentFloor = this.floors[start - 1];
+	let elevator = null;
+	let floor = null;
 
 	//check for stationary elevators on the same floor
 	if (currentFloor.elevators.length) {
-		const len = currentFloor.elevators.length;
-		for (let i = 0; i < len; i++) {
-			if (this.elevators[elevatorId].direction === 0) {
-				let elevator = this.elevators[elevatorId];
-				currentFloor.removeElevator(elevatorId);
-				elevator.openAndCloseDoors();
-			}
-		}
+		if (this.checkForStationaryElevators(currentFloor)){
+			elevator = checkForStationaryElevators(currentFloor);
+			floor = currentFloor;
+		})
 	}
 
 	//check for moving elevators in the same direction
 	if (!elevator) {
-		let nextUp = 
+		let nextUp = start += 1;
+		let nextDown = start -= 1;
+		const direction = start < end ? -1 : 1;
+
+		if (nextUp <= this.top) {
+
+		}
+
+		if (nextDown >= 1) {
+			
+		}
 	}
 
 	
 
-	//get closes stationary elevator
+	//get closest stationary elevator
+}
+
+Building.prototype.checkForStationaryElevators = function(floor){
+	const elevators = this.floors[floor - 1].elevators;
+	const len = elevators.length;
+	let elevator = null;
+
+	for (let i = 0; i < len; i++) {
+		if (this.elevators[elevatorId].direction === 0 && this.elevators[elevatorId].isActive()) {
+			let elevator = this.elevators[elevatorId];
+			break;
+		}
+	}
+
+	return elevator;
+};
+
+Building.prototype.checkForMovingElevators = function(floor, direction, destination){
+	const elevators = this.floors[floor - 1].elevators;
+	const len = elevators.length;
+	let elevator = null;
+
+	for (let i = 0; i < len; i++) {
+		if (this.elevators[elevatorsId].direction === direction && this.elevators[elevatorId].isActive()) {
+			//check to see if destination if on the same route as the elevators
+		}
+	}
 };
 
