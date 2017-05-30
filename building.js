@@ -59,18 +59,45 @@ Building.prototype.startTrip = function(start, end) {
 		let nextDown = start -= 1;
 		const direction = start < end ? -1 : 1;
 
-		if (nextUp <= this.top) {
+		while (nextUp <= this.top || nextDown >= 1) {
+			if (this.checkForMovingElevators(nextUp, direction, end)) {
+				elevator = this.checkFoMovingElevators(nextUp, direction, end);
+				floor = nextUp;
+				break;
+			}
+			if (this.checkForMovingElevators(nextDown, direction, end)) {
+				elevator = this.checkFoMovingElevators(nextUp, direction, end);
+				floor = nextDown;
+				break;
+			}
 
-		}
-
-		if (nextDown >= 1) {
-			
+			nextUp ++;
+			nextDown --;
 		}
 	}
 
-	
-
 	//get closest stationary elevator
+	if (!elevator) {
+		let nextUp = start += 1;
+		let nextDown = start -= 1;
+		const direction = start < end ? -1 : 1;
+
+		while (nextUp <= this.top || nextDown >= 1) {
+			if (this.checkForMovingElevators(nextUp, direction, end)) {
+				elevator = this.checkFoMovingElevators(nextUp, direction, end);
+				floor = nextUp;
+				break;
+			}
+			if (this.checkForMovingElevators(nextDown, direction, end)) {
+				elevator = this.checkFoMovingElevators(nextUp, direction, end);
+				floor = nextDown;
+				break;
+			}
+
+			nextUp ++;
+			nextDown --;
+		}
+	}
 }
 
 Building.prototype.checkForStationaryElevators = function(floor){
@@ -88,15 +115,26 @@ Building.prototype.checkForStationaryElevators = function(floor){
 	return elevator;
 };
 
-Building.prototype.checkForMovingElevators = function(floor, direction, destination){
+Building.prototype.checkForMovingElevators = function(floor, direction, target){
 	const elevators = this.floors[floor - 1].elevators;
 	const len = elevators.length;
 	let elevator = null;
 
 	for (let i = 0; i < len; i++) {
 		if (this.elevators[elevatorsId].direction === direction && this.elevators[elevatorId].isActive()) {
-			//check to see if destination if on the same route as the elevators
+			let destinations = this.elevators[elevatorId].destinations;
+			if (direction === 1 && destinations[destinations.length - 1] >= target) {
+				//target is on this elevators way up
+				elevator = this.elevators[elevatorId];
+				break;
+			}
+			if (direction === -1 && destinations[0] <= target) {
+				elevator = this.elevators[elevatorId];
+				break;
+			}
 		}
 	}
+
+	return elevator;
 };
 
