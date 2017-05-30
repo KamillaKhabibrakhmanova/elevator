@@ -22,10 +22,16 @@ Elevator.prototype.isActive = function() {
 * @params {int} directors (1 up, -1 down)
 */
 Elevator.prototype.moveOneLevel= function(direction) {
-	console.log(`Elevator moving from floor ${this.currentFloor} to ${this.currentFloor + direction}`)
+	setTimeout(() => {
+		console.log(`Elevator moving from floor ${this.currentFloor} to ${this.currentFloor + direction}`)
+	}, 1000);
 	this.currentFloor += direction;
 	this.floors ++;
 	this.direction = direction;
+	if (this.destinations.indexOf(currentFloor) > -1) {
+		this.openAndCloseDoors();
+		this.destinations.splice(this.destinations.indexOf(currentFloor), 1);
+	}
 };
 
 /*
@@ -38,4 +44,39 @@ Elevator.prototype.openAndCloseDoors = function() {
 		console.log('Closing doors');
 	}, 5000);
 };
+
+/*
+* addTrip: add floors to current trip
+* @params {array} floors to add
+*/
+Elevator.prototype.addFloors = function(floors) {
+	var current = this.destinations;
+	floors.forEach((floor) => {
+		if (current.indexOf(floor) === -1) {
+			current.push(floor);
+		}
+	}
+	this.destinations = current.sort();
+};
+
+/*
+* initiateTrip: initiate a trip
+* @params {direction} -1 or 1
+* @params {int} start floor
+* @params {int} end floor
+*/
+Elevator.prototype.initiateTrip = function(direction, start, end) {
+	this.direction = direction;
+	this.destinations = [start, end];
+	this.trips++;
+};
+
+/*
+* endTrip: end a trip
+*/
+Elevator.prototype.endTrip = function(direction, start, end) {
+	this.direction = 0;
+	this.destinations = [];
+};
+
 
